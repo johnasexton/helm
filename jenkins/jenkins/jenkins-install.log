@@ -1,0 +1,58 @@
+$ ./jenkins-install.sh
+Updated property [core/project].
+Switched to context "gke_initialkubetest_us-east1_autopilot-cluster-ikt-e1-01".
+namespace/jenkins created
+NAME                STATUS   AGE
+default             Active   17m
+gatekeeper-system   Active   16m
+jenkins             Active   0s
+kube-node-lease     Active   17m
+kube-public         Active   17m
+kube-system         Active   17m
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "jenkinsci" chart repository
+...Successfully got an update from the "jenkins" chart repository
+...Successfully got an update from the "incubator" chart repository
+...Successfully got an update from the "stable" chart repository
+...Successfully got an update from the "bitnami" chart repository
+Update Complete. ⎈Happy Helming!⎈
+NAME             	CHART VERSION	APP VERSION	DESCRIPTION
+jenkinsci/jenkins	3.5.11       	2.289.3    	Jenkins - Build great things at any scale! The ...
+Error from server ([denied by autogke-no-write-mode-hostpath] only ReadOnlyMany access mode allowed for hostPath volumes in Autopilot. Requesting user: <john.a.sexton@gmail.com> and groups: <["system:authenticated"]>
+[denied by autopilot-persistent-volume-limitation] Persistent Volume sources can only be of types ["csi", "nfs", "gcePersistentDisk"] within Autopilot.): error when creating "jenkins-volume.yaml": admission webhook "validation.gatekeeper.sh" denied the request: [denied by autogke-no-write-mode-hostpath] only ReadOnlyMany access mode allowed for hostPath volumes in Autopilot. Requesting user: <john.a.sexton@gmail.com> and groups: <["system:authenticated"]>
+[denied by autopilot-persistent-volume-limitation] Persistent Volume sources can only be of types ["csi", "nfs", "gcePersistentDisk"] within Autopilot.
+serviceaccount/jenkins created
+clusterrole.rbac.authorization.k8s.io/jenkins unchanged
+clusterrolebinding.rbac.authorization.k8s.io/jenkins unchanged
+helm install jenkins -n jenkins -f jenkins-values.yaml jenkinsci/jenkins
+W0818 21:38:34.275565    1673 warnings.go:70] Autopilot set default resource requests on StatefulSet jenkins/jenkins for container config-reload, as resource requests were not specified, and adjusted resource requests to meet requirements. See http://g.co/gke/autopilot-defaults and http://g.co/gke/autopilot-resources.
+NAME: jenkins
+LAST DEPLOYED: Wed Aug 18 21:38:30 2021
+NAMESPACE: jenkins
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Get your 'admin' user password by running:
+  kubectl exec --namespace jenkins -it svc/jenkins -c jenkins -- /bin/cat /run/secrets/chart-admin-password && echo
+2. Get the Jenkins URL to visit by running these commands in the same shell:
+  echo http://127.0.0.1:8080
+  kubectl --namespace jenkins port-forward svc/jenkins 8080:8080
+
+3. Login with the password from step 1 and the username: admin
+4. Configure security realm and authorization strategy
+5. Use Jenkins Configuration as Code by specifying configScripts in your values.yaml file, see documentation: http:///configuration-as-code and examples: https://github.com/jenkinsci/configuration-as-code-plugin/tree/master/demos
+
+For more information on running Jenkins on Kubernetes, visit:
+https://cloud.google.com/solutions/jenkins-on-container-engine
+
+For more information about Jenkins Configuration as Code, visit:
+https://jenkins.io/projects/jcasc/
+
+NOTE: Consider using a custom image with pre-installed plugins
+
+====
+gke2 run output:
+
+$ kubectl exec --namespace jenkins -it svc/jenkins -c jenkins -- /bin/cat /run/secrets/chart-admin-password && echo
+
+NKI9wTDxy5ifsVYFLrHLIO

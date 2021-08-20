@@ -35,7 +35,7 @@ kubectl apply -f jenkins-sa.yaml
 # install jenkins via helm deployment
 chart=${CHART}
 echo "helm install jenkins -n jenkins -f jenkins-bitnami-values.yaml $chart"
-helm install jenkins -n jenkins -f jenkins-values.yaml $chart
+helm install jenkins -n jenkins -f jenkins-bitnami-values.yaml $chart
 
 # get admin password
 # jsonpath="{.data.jenkins-admin-password}"

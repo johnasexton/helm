@@ -20,6 +20,9 @@ controller:
   componentName: "jenkins-controller"
   image: "bitnami/jenkins"
   tag: "2.289.3"
+  # image: "jenkinsci/jenkins"
+  # tag: "lts"
+  # image: "jenkins/jenkins"
   # tag: "lts-jdk11"
   imagePullPolicy: "Always"
   imagePullSecretName:

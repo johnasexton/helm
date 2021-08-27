@@ -18,9 +18,16 @@ renderHelmLabels: true
 controller:
   # Used for label app.kubernetes.io/component
   componentName: "jenkins-controller"
-  image: "jenkinsci/jenkins"
-  tag: "lts"
-  # image: "jenkins/jenkins"
+  image: "jenkins/jenkins"
+  tag: "2.289.3-jdk11"
+  # image: "jenkinsci/jenkins"
+  # tag: "lts"
+  # image: "bitnami/jenkins"
+  # tag: "2.289.3"
+  # image: "johnasexton/jenkins"
+  # tag: "0.1.1"
+  # image: "bitnami/jenkins"
+  # tag: 2.289.3-debian-10-r0
   # tag: "2.289.3-jdk11"
   # tag: "lts-jdk11"
   imagePullPolicy: "Always"
@@ -122,7 +129,7 @@ controller:
   targetPort: 8080
   # For minikube, set this to NodePort, elsewhere use LoadBalancer
   # Use ClusterIP if your setup includes ingress controller
-  serviceType: ClusterIP
+  serviceType: LoadBalancer
   # Use Local to preserve the client source IP and avoids a second hop for LoadBalancer and Nodeport type services,
   # but risks potentially imbalanced traffic spreading.
   serviceExternalTrafficPolicy:
@@ -566,8 +573,10 @@ agent:
   kubernetesReadTimeout: 15
   maxRequestsPerHostStr: "32"
   namespace:
-  image: "jenkins/inbound-agent"
-  tag: "4.6-1"
+  image: "johnasexton/jenkins-agent"
+  tag: "0.0.2"
+  # image: "jenkins/agent"
+  # tag: "latest-jdk11"
   workingDir: "/home/jenkins"
   nodeUsageMode: "NORMAL"
   customJenkinsLabels: []
@@ -653,7 +662,7 @@ agent:
   command:
   args: "${computer.jnlpmac} ${computer.name}"
   # Side container name
-  sideContainerName: "jnlp"
+  sideContainerName: "inbound"
   # Doesn't allocate pseudo TTY by default
   TTYEnabled: false
   # Max number of spawned agent

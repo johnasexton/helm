@@ -4,7 +4,11 @@ export GKECLUSTER=gke_initialkubetest_us-east1-b_ikt-e1-01
 export REPOSPACE="bitnami"
 export NAMESPACE="jenkins"
 export CHART="${REPOSPACE}/${NAMESPACE}"
-export CHARTSLOCALE="jenkinsci https://charts.jenkins.io"
+# export CHART="/Users/johnsexton/workspace/bitnami/charts/bitnami/jenkins"
+# export CHART="/Users/johnsexton/workspace/jenkinsci/helm-charts/charts/jenkins"
+# export CHART="/Users/johnsexton/workspace/helm/charts/stable/jenkins"
+# export CHARTSLOCALE="jenkinsci https://charts.jenkins.io"
+export CHARTSLOCALE="bitnami https://charts.bitnami.com/bitnami"
 
 # set context
 echo "gcloud config set project ${GCPPROJECT}"

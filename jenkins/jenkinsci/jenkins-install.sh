@@ -1,10 +1,29 @@
 #!/usr/local/bin/bash
-export GCPPROJECT=initialkubetest
-export GKECLUSTER=gke_initialkubetest_us-east1-b_initialkubetest-e1-01
-export REPOSPACE="jenkinsci"
+export GCPPROJECT="initialkubetest"
+export GKECLUSTER="gke_initialkubetest_us-east1-b_initialkubetest-e1-01"
+export REPOSPACE="jenkinsci" # jenkinsci or bitnami
 export NAMESPACE="jenkins"
-export CHART="${REPOSPACE}/${NAMESPACE}"
-export CHARTSLOCALE="jenkinsci https://charts.jenkins.io"
+
+# dynamic from "${REPOSPACE}/${NAMESPACE}"
+# export CHART="${REPOSPACE}/${NAMESPACE}"
+# export CHARTSLOCALE="bitnami https://charts.bitnami.com/bitnami"
+# export CHARTSLOCALE="jenkinsci https://charts.jenkins.io"
+
+# local bitnami charts & values
+# export CHART="/Users/johnsexton/workspace/bitnami/charts/bitnami/jenkins"
+# export VALUESFILE="/Users/johnsexton/workspace/bitnami/charts/bitnami/jenkins/values.yaml"
+
+# local jenkinsci charts & values
+export CHART="/Users/johnsexton/workspace/jenkinsci/helm-charts/charts/jenkins"
+# export VALUESFILE="/Users/johnsexton/workspace/jenkinsci/helm-charts/charts/jenkins/values.yaml"
+
+# local helm/stable charts & values
+# export CHART="/Users/johnsexton/workspace/helm/charts/stable/jenkins"
+# export VALUESFILE="/Users/johnsexton/workspace/helm/charts/stable/jenkins/values.yaml"
+
+export VALUESFILE="jenkins-values.yaml"
+export GKENAMESPACE="jenkins"
+export DEPLOYMENTNAME="jenkins"
 
 # set context
 echo "gcloud config set project ${GCPPROJECT}"
@@ -13,8 +32,8 @@ echo "kubectx ${GKECLUSTER}"
 kubectx ${GKECLUSTER}
 
 # create namespace
-echo "kubectl create namespace ${NAMESPACE}"
-kubectl create namespace ${NAMESPACE}
+echo "kubectl create namespace ${GKENAMESPACE}"
+kubectl create namespace ${GKENAMESPACE}
 echo "kubectl get namespaces"
 kubectl get namespaces
 
@@ -22,8 +41,8 @@ kubectl get namespaces
 # helm repo add ${CHARTSLOCALE}
 echo "helm repo update"
 helm repo update
-echo "helm search repo ${REPOSPACE}"
-helm search repo ${REPOSPACE}
+# echo "helm search repo ${REPOSPACE}"
+# helm search repo ${REPOSPACE}
 
 # apply manifests & edit helm values
 # volume only needed for rue gke but not autopilot gke
@@ -33,9 +52,8 @@ echo "kubectl apply -f jenkins-sa.yaml"
 kubectl apply -f jenkins-sa.yaml
 
 # install jenkins via helm deployment
-chart=${CHART}
-echo "helm install jenkins -n jenkins -f jenkins-values.yaml $chart"
-helm install jenkins -n jenkins -f jenkins-values.yaml $chart
+echo "helm install ${DEPLOYMENTNAME} -n ${GKENAMESPACE} -f ${VALUESFILE} ${CHART}"
+helm install ${DEPLOYMENTNAME} -n ${GKENAMESPACE} -f ${VALUESFILE} ${CHART}
 
 # get admin password
 # jsonpath="{.data.jenkins-admin-password}"

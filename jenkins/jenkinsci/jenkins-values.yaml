@@ -18,14 +18,16 @@ renderHelmLabels: true
 controller:
   # Used for label app.kubernetes.io/component
   componentName: "jenkins-controller"
+  image: "jenkins/jenkins"
+  tag: "2.289.3-jdk11"
   # image: "jenkinsci/jenkins"
   # tag: "lts"
   # image: "bitnami/jenkins"
   # tag: "2.289.3"
   # image: "johnasexton/jenkins"
   # tag: "0.1.1"
-  image: "bitnami/jenkins"
-  tag: 2.289.3-debian-10-r0
+  # image: "bitnami/jenkins"
+  # tag: 2.289.3-debian-10-r0
   # tag: "2.289.3-jdk11"
   # tag: "lts-jdk11"
   imagePullPolicy: "Always"
@@ -573,6 +575,8 @@ agent:
   namespace:
   image: "johnasexton/jenkins-agent"
   tag: "0.0.2"
+  # image: "jenkins/agent"
+  # tag: "latest-jdk11"
   workingDir: "/home/jenkins"
   nodeUsageMode: "NORMAL"
   customJenkinsLabels: []
